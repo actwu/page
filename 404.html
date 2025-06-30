@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Page It - Publisher</title>
+<meta name='description' content='A webiste to github publisher.'>
+<meta name='keywords' content='Github, Page, Code, website'>
+<meta name='author' content='Actwu'>
+<meta name='robots' content='index, follow'>
+<meta name='googlebot' content='index, follow'>
+<meta name='referrer' content='no-referrer-when-downgrade'>
+<link rel='icon' href='https://ise.web.app/fa/1.png'>
+<link rel='canonical' href='https://actwu.github.io/page'>
+<meta property='og:title' content='Page It - Publisher'>
+<meta property='og:description' content='A webiste to github publisher.'>
+<meta property='og:image' content=''>
+<meta property='og:url' content='https://actwu.github.io/page'>
+<meta property='og:type' content=''>
+<meta property='og:site_name' content='Pageit'>
+<meta property='og:locale' content=''>
+<meta name='twitter:card' content='summary_large_image'>
+<meta name='twitter:title' content='Page It - Publisher'>
+<meta name='twitter:description' content='A webiste to github publisher.'>
+<meta name='twitter:image' content=''>
+<meta name='twitter:site' content=''>
+<meta name='twitter:creator' content=''>
+
+<script type='application/ld+json'>
+{
+"@context":"https://schema.org",
+"@type":"Organization",
+"name":"Pageit",
+"url":"https://actwu.github.io/page",
+"logo":"https://ise.web.app/fa/1.png",
+"description":"A webiste to github publisher."
+}
+</script>
+<script type='application/ld+json'>
+{
+"@context":"https://schema.org",
+"@type":"BreadcrumbList",
+"itemListElement":[
+{"@type":"ListItem","position":1,"name":"Home","item":"https://actwu.github.io/page"}
+]
+}
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+* {border: unset;margin:0;}
+body {
+max-width: 100vw;
+}
+html,body{margin:0;padding:0;background:#000;color:#fff;font-family:sans-serif;height:100%}
+[data-app]{display:flex;flex-direction:column;height:100vh}
+[data-step]{flex:1;display:none;flex-direction:column;}
+[data-step][data-show]{display:flex}
+button,input{background:#111;color:#fff;border:1px solid #333;padding:.5rem}
+[data-area]{display:flex;flex:1;}
+[data-editor],[data-preview]{flex:1;height:100%;min-height:10rem}
+textarea{width:92%; flex:0;height:100%;background:#111;color:#fff;border:none;resize:none;padding:1rem;font-family:monospace}
+iframe{width:100%;height:100%;border:none;background:#fff}
+@media(max-width:768px){[data-area]{flex-direction:column-reverse}}
+ul{padding-left:1rem}
+a{color:#4af}
+[data-success]{color:lightgreen;margin-top:1rem}
+[data-controls]{display:flex;gap:.5rem;padding:1rem}
+[data-controls] {
+position:fixed;
+bottom:10px;
+left: 10px;
+}
+</style>
+</head>
+<body>
+<div data-app>
+<div data-step="1" data-show>
+<div data-area>
+<div data-editor><textarea id='code' oninput=updatePreview()><!DOCTYPE html>
+<html>
+<head><style>body{color:blue}</style></head>
+<body>Hello</body>
+</html></textarea></div>
+<div data-preview><iframe id=iframe></iframe></div>
+</div>
+</div>
+<div data-step="2">
+<p>GitHub Token:</p>
+<input type=password id=token placeholder="GitHub Token">
+<button onmousedown=getToken()>Get Token</button>
+<p>Repo Name:</p>
+<input id=repoName placeholder=my-site>
+<button id=pubBtn onmousedown=publish()>Publish</button>
+</div>
+<div data-step="3">
+<p>Published:</p>
+<div id=done></div>
+<br/>
+<h3>Sites:</h3>
+<ul id=sites></ul>
+</div>
+<div data-controls id=nav>
+<button onmousedown=back()>Back</button>
+<button id=nextBtn onmousedown=next()>Next</button>
+</div>
+</div>
+<script>
+let step=1
+const ge=id=>document.getElementById(id)
+const next=()=>{
+document.querySelector(`[data-step="${step}"]`).removeAttribute('data-show')
+step++
+let el=document.querySelector(`[data-step="${step}"]`)
+if(el)el.setAttribute('data-show','')
+ge('nextBtn').style.display=step===3?'none':''
+if(step===3)renderSites()
+}
+const back=()=>{
+if(step>1){
+document.querySelector(`[data-step="${step}"]`).removeAttribute('data-show')
+step--
+document.querySelector(`[data-step="${step}"]`).setAttribute('data-show','')
+ge('nextBtn').style.display=step===3?'none':''
+}
+}
+const getToken=()=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
+const publish=()=>{
+let token=ge('token').value
+let repo=ge('repoName').value
+let code=ge('code').value
+let btn=ge('pubBtn')
+if(!token||!repo){alert('Missing input');return}
+fetch('https://api.github.com/user/repos',{
+method:'POST',
+headers:{Authorization:`token ${token}`,Accept:'application/vnd.github+json'},
+body:JSON.stringify({name:repo,auto_init:true,private:false,has_issues:false,has_projects:false,has_wiki:false})
+}).then(r=>r.json()).then(d=>{
+let html404=btoa(unescape(encodeURIComponent(code)))
+let indexHTML=btoa(unescape(encodeURIComponent(`<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=404.html"></head><body>Redirecting</body></html>`)))
+let user=d.owner.login
+let base=`https://api.github.com/repos/${user}/${repo}/contents/`
+Promise.all([
+fetch(base+'404.html',{method:'PUT',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github+json'},body:JSON.stringify({message:'404.html',content:html404})}),
+fetch(base+'index.html',{method:'PUT',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github+json'},body:JSON.stringify({message:'index.html',content:indexHTML})})
+]).then(()=>{
+fetch(`https://api.github.com/repos/${user}/${repo}/pages`,{
+method:'POST',
+headers:{Authorization:`token ${token}`,Accept:'application/vnd.github+json'},
+body:JSON.stringify({source:{branch:'main',path:'/'}})
+}).then(()=>{
+let url=`https://${user}.github.io/${repo}`
+let p=document.createElement('p')
+let a=document.createElement('a')
+a.href=url
+a.target='_blank'
+a.textContent=url
+p.textContent='✅ '
+p.append(a)
+ge('done').append(p)
+let list=JSON.parse(localStorage.getItem('pub')||'[]')
+if(!list.includes(url)){
+list.push(url)
+localStorage.setItem('pub',JSON.stringify(list))
+}
+let s=document.createElement('div')
+s.setAttribute('data-success','')
+s.textContent='✅ Published!'
+btn.insertAdjacentElement('afterend',s)
+next()
+})
+})
+}).catch(e=>alert(e.message))
+}
+const updatePreview=()=>{
+let doc=ge('iframe').contentDocument
+doc.open()
+doc.write(ge('code').value)
+doc.close()
+}
+const renderSites=()=>{
+let ul=ge('sites')
+ul.innerText=''
+let list=JSON.parse(localStorage.getItem('pub')||'[]')
+for(let url of list){
+let li=document.createElement('li')
+let a=document.createElement('a')
+a.href=url
+a.target='_blank'
+a.textContent=url
+li.append(a)
+ul.append(li)
+}
+}
+window.onload=updatePreview
+</script>
+</body>
+</html>
