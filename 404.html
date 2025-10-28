@@ -182,12 +182,19 @@ next()
 .catch(e=>alert(e.message))
 }
 
+let _timer
 const updatePreview=()=>{
-const doc=ge('iframe').contentDocument
+clearTimeout(_timer)
+_timer=setTimeout(()=>{
+const iframe=ge('iframe')
+if(!iframe)return
+const doc=iframe.contentDocument||iframe.contentWindow.document
 doc.open()
 doc.write(ge('code').value)
 doc.close()
+},120)
 }
+  
 
 const renderSites=()=>{
 const ul=ge('sites')
