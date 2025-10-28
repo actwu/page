@@ -13,7 +13,8 @@
 ::placeholder{color:var(--place);}
 *{margin:0;padding:0;box-sizing:border-box;color:var(--text);border:none;outline:none;text-decoration:none;font-family:"Roboto Mono",monospace;}
 body{background:var(--bg);width:100%;height:100svh;display:flex;flex-direction:column;}
-nav{left:0;right:0;background:var(--bg);display:flex;padding:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
+nav{left:0;right:0;background:var(--bg);display:flex;padding:.5rem;
+    gap:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
 main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 section[aria-stage]{flex:1;display:none;padding:0;}
 section[aria-stage][data-active]{display:flex;flex-direction:row;align-items:stretch;gap:0;}
@@ -49,10 +50,12 @@ box:hover{background-color:var(--line);}
 <section aria-stage="2">
 <form id="publishForm">
 <button onmousedown=getToken()>Get Token</button>
-<p>GitHub Token</p>
-  <input id="token" type="password" required>
-<p>Repo Name </p>
- <input id="repo" required>
+  <input id="token" 
+   placeholder="GitHub Token"
+   type="password" required>
+ <input id="repo" 
+  placeholder="Site Name"
+  required>
 <button id="publishBtn" type="button">Publish</button>
 </form>
 </section>
