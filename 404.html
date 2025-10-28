@@ -33,11 +33,12 @@ nav{background:#000;padding:.5rem;display:flex;gap:.5rem;flex:1;}
 <iframe id="preview" aria-label="Live preview"></iframe>
 </section>
 
-<section aria-stage="2">
+<section aria-stage="2" >
 <form id="publishForm">
+ <button onmousedown=getToken()>Get Token</button>
 <label>GitHub Token <input id="token" type="password" required></label>
 <label>Repo Name <input id="repo" required></label>
- <button onmousedown=getToken()>Get Token</button>
+ 
 <button id="publishBtn" type="button">Publish</button>
 </form>
 </section>
@@ -48,8 +49,12 @@ nav{background:#000;padding:.5rem;display:flex;gap:.5rem;flex:1;}
 </main>
 
 <nav>
-<button id="prevBtn">Back</button>
-<button id="nextBtn">Next</button>
+<button id="prevBtn" hide>
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+ Back</button>
+<button id="nextBtn">
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+ Next</button>
 </nav>
 
 <script defer>
