@@ -11,7 +11,7 @@
 <style>
 html,body{margin:0;padding:0;background:#000;color:#fff;font-family:"Roboto Mono",monospace;height:100%;overflow:hidden}
 main{display:flex;flex-direction:column;height:100%}
-section[aria-stage]{flex:1;display:none;padding:1rem;box-sizing:border-box}
+section[aria-stage]{flex:1;display:none;padding:0rem;box-sizing:border-box}
 section[aria-stage][data-active]{display:flex;flex-direction:row;gap:0rem;align-items:stretch}
 textarea{flex:1;background:#111;color:#fff;border:1px solid #333;resize:none;padding:.5rem;font-size:.9rem;outline:none;height:100%}
 iframe{flex:1;background:#fff;border:1px solid #333;height:100%}
@@ -35,6 +35,7 @@ nav{position:fixed;bottom:0;left:0;background:#111;padding:.5rem;display:flex;ga
 <form id="publishForm">
 <label>GitHub Token <input id="token" type="password" required></label>
 <label>Repo Name <input id="repo" required></label>
+ <button onmousedown=getToken()>Get Token</button>
 <button id="publishBtn" type="button">Publish</button>
 </form>
 </section>
@@ -150,6 +151,8 @@ publishBtn.addEventListener('click',publish)
 prevBtn.addEventListener('click',_0=>{if(stage>1){stage--;switchStage()}})
 nextBtn.addEventListener('click',_0=>{if(stage<3){stage++;switchStage()}})
 window.addEventListener('load',restoreState)
+
+ const getToken=()=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
 </script>
 </body>
 </html>
