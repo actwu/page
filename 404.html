@@ -182,6 +182,7 @@ next()
 .catch(e=>alert(e.message))
 }
 
+// smoother, throttled live preview
 let _timer
 const updatePreview=()=>{
 clearTimeout(_timer)
@@ -194,7 +195,6 @@ doc.write(ge('code').value)
 doc.close()
 },120)
 }
-  
 
 const renderSites=()=>{
 const ul=ge('sites')
@@ -211,8 +211,9 @@ ul.append(li)
 }
 }
 
-window.onload=updatePreview
+window.addEventListener('load',updatePreview)
 </script>
+
 
 <script>
 (function _A_SVALL(){
