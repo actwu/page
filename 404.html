@@ -9,42 +9,59 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;background:#000;color:#fff;font-family:"Roboto Mono",monospace;height:99svh;overflow:hidden}
-* {border: unset; margin:unset;
-main{display:flex;flex-direction:column;height:90svh;}
-section[aria-stage]{flex:1;display:none;padding:0rem;box-sizing:border-box}
-section[aria-stage][data-active]{display:flex;flex-direction:row;gap:0rem;align-items:stretch}
-textarea{flex:1;background:#000;color:#fff;resize:none;padding:.5rem;font-size:.9rem;outline:none;height:100%}
-iframe{flex:1;background:#fff;height:100%;}
-form{display:flex;flex-direction:column;padding:1rem; gap:.5rem;max-width:300px}
-input,button{background:#000;color:#fff;padding:.4rem;font-size:.9rem}
-button:hover{background:#222;cursor:pointer; display:block; justify-content:center;align-content:center;}
-nav{background:#000;padding:.5rem;display:flex;gap:.5rem;flex:1;}
-@media (orientation: portrait) {
- section[aria-stage][data-active]{flex-direction:column-reverse}
+:root{--bg:#000;--text:#f2f2ff;--thumb:#202025;--btn:#3d4fc7;--line:#161423;--place:#868293;--progress-bg:#2c283d;--progress-fill:#3d4fc7;}
+::placeholder{color:var(--place);}
+*{margin:0;padding:0;box-sizing:border-box;color:var(--text);border:none;outline:none;text-decoration:none;font-family:"Roboto Mono",monospace;}
+body{background:var(--bg);width:100%;height:100svh;display:flex;flex-direction:column;}
+nav{left:0;right:0;background:var(--bg);display:flex;padding:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
+main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+section[aria-stage]{flex:1;display:none;padding:0;}
+section[aria-stage][data-active]{display:flex;flex-direction:row;align-items:stretch;gap:0;}
+textarea{flex:1;background:var(--bg);color:var(--text);resize:none;padding:.8rem;font-size:.9rem;outline:none;height:100%;border-bottom:4px solid var(--line);}
+textarea:hover{background-color:var(--line);border-bottom:4px solid var(--progress-bg);}
+iframe{flex:1;background:#fff;height:100%;border:none;}
+form{display:flex;flex-direction:column;padding:1rem;gap:.8rem;max-width:340px;margin:auto;width:100%;}
+input{background:var(--bg);color:var(--text);padding:.8rem;border-bottom:4px solid var(--line);border-radius:2.5px;}
+input:hover{background-color:var(--line);border-bottom:4px solid var(--progress-bg);}
+btn,button{display:inline-flex;justify-content:center;align-items:center;background:var(--btn);color:var(--text);border-radius:9999px;padding:.8rem 1.2rem;cursor:pointer;font-size:14px;user-select:none;transition:opacity .2s;}
+btn:hover,button:hover{opacity:.85;}
+box{display:flex;flex-direction:column;gap:.2rem;flex:1;border-radius:15px;background:var(--progress-bg);align-items:flex-start;justify-content:end;padding:1rem;transition:.5s;}
+box:hover{background-color:var(--line);}
+#sitesList a{display:block;padding:.4rem 0;color:var(--text);}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--thumb);}
+[hide]{display:none;}
+@media (orientation:portrait){
+ section[aria-stage][data-active]{flex-direction:column-reverse;}
 }
- [hide]{display: none;}
 </style>
 </head>
 <body>
+<nav></nav>
+
 <main>
 <section aria-stage="1" data-active>
 <textarea id="editor" placeholder="Write HTML here..."></textarea>
 <iframe id="preview" aria-label="Live preview"></iframe>
 </section>
 
-<section aria-stage="2" >
+<section aria-stage="2">
 <form id="publishForm">
- <button onmousedown=getToken()>Get Token</button>
-<label>GitHub Token <input id="token" type="password" required></label>
-<label>Repo Name <input id="repo" required></label>
- 
+<button onmousedown=getToken()>Get Token</button>
+<p>GitHub Token</p>
+  <input id="token" type="password" required>
+<p>Repo Name </p>
+ <input id="repo" required>
 <button id="publishBtn" type="button">Publish</button>
 </form>
 </section>
 
 <section aria-stage="3">
+<set big>
+<h3>Published Sites</h3>
 <div id="sitesList"></div>
+</set>
 </section>
 </main>
 
@@ -52,9 +69,9 @@ nav{background:#000;padding:.5rem;display:flex;gap:.5rem;flex:1;}
 <button id="prevBtn" hide>
  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
  Back</button>
-<button id="nextBtn">
- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
- Next</button>
+<button id="nextBtn">Next
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
 </nav>
 
 <script defer>
@@ -68,8 +85,8 @@ const list=document.getElementById('sitesList')
 const prevBtn=document.getElementById('prevBtn')
 const nextBtn=document.getElementById('nextBtn')
 const publishBtn=document.getElementById('publishBtn')
-
 let timer
+
 const updatePreview=_0=>{
  clearTimeout(timer)
  timer=setTimeout(()=>{
@@ -83,9 +100,8 @@ const updatePreview=_0=>{
 
 const switchStage=_0=>{
  stages.forEach(s=>s.removeAttribute('data-active'))
- stages[stage-1].setAttribute('data-active','');
-
- stage==1?prevBtn.setAttribute("hide",""):prevBtn.removeAttribute("hide");
+ stages[stage-1].setAttribute('data-active','')
+ stage==1?prevBtn.setAttribute('hide',''):prevBtn.removeAttribute('hide')
 }
 
 const restoreState=_0=>{
@@ -103,13 +119,12 @@ const saveForm=_0=>{
 
 const renderSites=_0=>{
  const saved=JSON.parse(localStorage.getItem('pageit_sites')||'[]')
- list.innerHTML=saved.length?'<h3>Published Sites</h3>':'' 
+ list.innerHTML=''
  saved.forEach(u=>{
   const a=document.createElement('a')
   a.href=u
   a.textContent=u
   a.target='_blank'
-  a.style.display='block'
   list.appendChild(a)
  })
 }
@@ -160,9 +175,9 @@ publishBtn.addEventListener('click',publish)
 prevBtn.addEventListener('click',_0=>{if(stage>1){stage--;switchStage()}})
 nextBtn.addEventListener('click',_0=>{if(stage<3){stage++;switchStage()}})
 window.addEventListener('load',restoreState)
-
- const getToken=()=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
+const getToken=_0=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
 </script>
 </body>
 </html>
+
 
