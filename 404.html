@@ -13,15 +13,16 @@ html,body{margin:0;padding:0;background:#000;color:#fff;font-family:"Roboto Mono
 main{display:flex;flex-direction:column;height:100%}
 section[aria-stage]{flex:1;display:none;padding:0rem;box-sizing:border-box}
 section[aria-stage][data-active]{display:flex;flex-direction:row;gap:0rem;align-items:stretch}
-textarea{flex:1;background:#111;color:#fff;border:1px solid #333;resize:none;padding:.5rem;font-size:.9rem;outline:none;height:100%}
-iframe{flex:1;background:#fff;border:1px solid #333;height:100%}
+textarea{flex:1;background:#000;color:#fff;resize:none;padding:.5rem;font-size:.9rem;outline:none;height:100%}
+iframe{flex:1;background:#fff;height:100%}
 form{display:flex;flex-direction:column;gap:.5rem;max-width:300px}
-input,button{background:#111;color:#fff;border:1px solid #333;padding:.4rem;font-size:.9rem}
+input,button{background:#000;color:#fff;padding:.4rem;font-size:.9rem}
 button:hover{background:#222;cursor:pointer}
-nav{position:fixed;bottom:0;left:0;background:#111;padding:.5rem;display:flex;gap:.5rem;border-top:1px solid #333}
+nav{bottom:0;left:0;background:#000;padding:.5rem;display:flex;gap:.5rem;}
 @media (orientation: portrait) {
  section[aria-stage][data-active]{flex-direction:column-reverse}
 }
+ [hide]{display: none;}
 </style>
 </head>
 <body>
@@ -46,8 +47,8 @@ nav{position:fixed;bottom:0;left:0;background:#111;padding:.5rem;display:flex;ga
 </main>
 
 <nav>
-<button id="prevBtn">← Back</button>
-<button id="nextBtn">Next →</button>
+<button id="prevBtn">Back</button>
+<button id="nextBtn">Next</button>
 </nav>
 
 <script defer>
@@ -76,7 +77,9 @@ const updatePreview=_0=>{
 
 const switchStage=_0=>{
  stages.forEach(s=>s.removeAttribute('data-active'))
- stages[stage-1].setAttribute('data-active','')
+ stages[stage-1].setAttribute('data-active','');
+
+ stage==1?prevBtn.setAttribute("hide",""):prevBtn.removeAttribute("hide");
 }
 
 const restoreState=_0=>{
