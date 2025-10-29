@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,17 +81,17 @@ Back</button>
 </nav>
 
 <script defer>
-let stage=1
-const stages=document.querySelectorAll('section[aria-stage]')
-const editor=document.getElementById('editor')
-const frame=document.getElementById('preview')
-const token=document.getElementById('token')
-const repo=document.getElementById('repo')
-const list=document.getElementById('sitesList')
-const prevBtn=document.getElementById('prevBtn')
-const nextBtn=document.getElementById('nextBtn')
-const publishBtn=document.getElementById('publishBtn')
-let timer
+let stage=1;
+const stages=document.querySelectorAll('section[aria-stage]');
+const editor=document.getElementById('editor');
+const frame=document.getElementById('preview');
+const token=document.getElementById('token');
+const repo=document.getElementById('repo');
+const list=document.getElementById('sitesList');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const publishBtn=document.getElementById('publishBtn');
+let timer;
 
 const updatePreview=_0=>{
 clearTimeout(timer)
@@ -181,12 +178,12 @@ switchStage()
 })
 }
 
-editor.addEventListener('input',updatePreview)
-publishBtn.addEventListener('click',publish)
-prevBtn.addEventListener('click',_0=>{if(stage>1){stage--;switchStage()}})
-nextBtn.addEventListener('click',_0=>{if(stage<3){stage++;switchStage()}})
-window.addEventListener('load',restoreState)
-const getToken=_0=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
+editor.addEventListener('input',updatePreview);
+publishBtn.addEventListener('click',publish);
+prevBtn.addEventListener('click',_0=>{if(stage>1){stage--;switchStage()}});
+nextBtn.addEventListener('click',_0=>{if(stage<3){stage++;switchStage()}});
+window.addEventListener('load',restoreState);
+const getToken=_0=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo');
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
@@ -220,6 +217,7 @@ automaticLayout: true
 
 monacoEditor.onDidChangeModelContent(() => {
 editor.value = monacoEditor.getValue(); 
+  updatePreview()
 });
 });
 } else {
