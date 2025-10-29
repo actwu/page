@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +17,7 @@
 *{margin:0;padding:0;box-sizing:border-box;color:var(--text);border:none;outline:none;text-decoration:none;font-family:"Roboto Mono",monospace;}
 body{background:var(--bg);width:100%;height:100svh;display:flex;flex-direction:column;}
 nav{left:0;right:0;background:var(--bg);display:flex;padding:.5rem;
-    gap:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
+gap:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
 main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 section[aria-stage]{flex:1;display:none;padding:0;}
 section[aria-stage][data-active]{display:flex;flex-direction:row;align-items:stretch;gap:0;}
@@ -34,7 +37,7 @@ box:hover{background-color:var(--line);}
 ::-webkit-scrollbar-thumb{background:var(--thumb);}
 [hide]{display:none;}
 @media (orientation:portrait){
- section[aria-stage][data-active]{flex-direction:column-reverse;}
+section[aria-stage][data-active]{flex-direction:column-reverse;}
 }
 </style>
 </head>
@@ -50,12 +53,12 @@ box:hover{background-color:var(--line);}
 <section aria-stage="2">
 <form id="publishForm">
 <button onmousedown=getToken()>Get Token</button>
-  <input id="token" 
-   placeholder="GitHub Token"
-   type="password" required>
- <input id="repo" 
-  placeholder="Site Name"
-  required>
+<input id="token" 
+placeholder="GitHub Token"
+type="password" required>
+<input id="repo" 
+placeholder="Site Name"
+required>
 <button id="publishBtn" type="button">Publish</button>
 </form>
 </section>
@@ -69,9 +72,11 @@ box:hover{background-color:var(--line);}
 </main>
 
 <nav>
+<button id="tht"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></button>
+
 <button id="prevBtn" hide>
- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
- Back</button>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+Back</button>
 <button id="nextBtn">Next
 
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
@@ -91,86 +96,88 @@ const publishBtn=document.getElementById('publishBtn')
 let timer
 
 const updatePreview=_0=>{
- clearTimeout(timer)
- timer=setTimeout(()=>{
-  const doc=frame.contentDocument
-  doc.open()
-  doc.write(editor.value)
-  doc.close()
-  localStorage.setItem('pageit_html',editor.value)
- },120)
+clearTimeout(timer)
+timer=setTimeout(()=>{
+const doc=frame.contentDocument
+doc.open()
+doc.write(editor.value)
+doc.close()
+localStorage.setItem('pageit_html',editor.value)
+},120)
 }
 
 const switchStage=_0=>{
- stages.forEach(s=>s.removeAttribute('data-active'))
- stages[stage-1].setAttribute('data-active','')
- stage==1?prevBtn.setAttribute('hide',''):prevBtn.removeAttribute('hide')
+stages.forEach(s=>s.removeAttribute('data-active'))
+stages[stage-1].setAttribute('data-active','')
+stage==1?prevBtn.setAttribute('hide',''):prevBtn.removeAttribute('hide');
+document.getElementById('tht').style.display = stage === 1 ? 'none' : 'flex';
+
 }
 
 const restoreState=_0=>{
- editor.value=localStorage.getItem('pageit_html')||''
- token.value=localStorage.getItem('pageit_token')||''
- repo.value=localStorage.getItem('pageit_repo')||''
- renderSites()
- updatePreview()
+editor.value=localStorage.getItem('pageit_html')||''
+token.value=localStorage.getItem('pageit_token')||''
+repo.value=localStorage.getItem('pageit_repo')||''
+renderSites()
+updatePreview()
 }
 
 const saveForm=_0=>{
- localStorage.setItem('pageit_token',token.value)
- localStorage.setItem('pageit_repo',repo.value)
+localStorage.setItem('pageit_token',token.value)
+localStorage.setItem('pageit_repo',repo.value)
 }
 
 const renderSites=_0=>{
- const saved=JSON.parse(localStorage.getItem('pageit_sites')||'[]')
- list.innerHTML=''
- saved.forEach(u=>{
-  const a=document.createElement('a')
-  a.href=u
-  a.textContent=u
-  a.target='_blank'
-  list.appendChild(a)
- })
+const saved=JSON.parse(localStorage.getItem('pageit_sites')||'[]')
+list.innerHTML=''
+saved.forEach(u=>{
+const a=document.createElement('a')
+a.href=u
+a.textContent=u
+a.target='_blank'
+list.appendChild(a)
+})
 }
 
 const publish=_0=>{
- saveForm()
- fetch('https://api.github.com/user',{headers:{Authorization:'token '+token.value}})
- .then(r=>r.json())
- .then(user=>{
-  if(!user.login){alert('Invalid token');return}
-  const repoName=repo.value.trim()
-  fetch('https://api.github.com/user/repos',{
-   method:'POST',
-   headers:{Authorization:'token '+token.value,'Content-Type':'application/json'},
-   body:JSON.stringify({name:repoName,private:false})
-  })
-  .then(r=>r.json())
-  .then(()=>{
-   const html=btoa(unescape(encodeURIComponent(editor.value)))
-   const index=btoa('<meta http-equiv="refresh" content="0;url=404.html">')
-   const put=(p,c)=>fetch(`https://api.github.com/repos/${user.login}/${repoName}/contents/${p}`,{
-    method:'PUT',
-    headers:{Authorization:'token '+token.value,'Content-Type':'application/json'},
-    body:JSON.stringify({message:'init',content:c})
-   })
-   put('404.html',html)
-   .then(()=>put('index.html',index))
-   .then(()=>{
-    fetch(`https://api.github.com/repos/${user.login}/${repoName}/pages`,{
-     method:'POST',headers:{Authorization:'token '+token.value}
-    }).then(()=>{
-     const url=`https://${user.login}.github.io/${repoName}`
-     const arr=JSON.parse(localStorage.getItem('pageit_sites')||'[]')
-     arr.push(url)
-     localStorage.setItem('pageit_sites',JSON.stringify(arr))
-     alert('Published at '+url)
-     renderSites()
-     stage=3
-     switchStage()
-    })
-   })
-  }).catch(e=>alert('Error: '+e))
- })
+saveForm()
+fetch('https://api.github.com/user',{headers:{Authorization:'token '+token.value}})
+.then(r=>r.json())
+.then(user=>{
+if(!user.login){alert('Invalid token');return}
+const repoName=repo.value.trim()
+fetch('https://api.github.com/user/repos',{
+method:'POST',
+headers:{Authorization:'token '+token.value,'Content-Type':'application/json'},
+body:JSON.stringify({name:repoName,private:false})
+})
+.then(r=>r.json())
+.then(()=>{
+const html=btoa(unescape(encodeURIComponent(editor.value)))
+const index=btoa('<meta http-equiv="refresh" content="0;url=404.html">')
+const put=(p,c)=>fetch(`https://api.github.com/repos/${user.login}/${repoName}/contents/${p}`,{
+method:'PUT',
+headers:{Authorization:'token '+token.value,'Content-Type':'application/json'},
+body:JSON.stringify({message:'init',content:c})
+})
+put('404.html',html)
+.then(()=>put('index.html',index))
+.then(()=>{
+fetch(`https://api.github.com/repos/${user.login}/${repoName}/pages`,{
+method:'POST',headers:{Authorization:'token '+token.value}
+}).then(()=>{
+const url=`https://${user.login}.github.io/${repoName}`
+const arr=JSON.parse(localStorage.getItem('pageit_sites')||'[]')
+arr.push(url)
+localStorage.setItem('pageit_sites',JSON.stringify(arr))
+alert('Published at '+url)
+renderSites()
+stage=3
+switchStage()
+})
+})
+}).catch(e=>alert('Error: '+e))
+})
 }
 
 editor.addEventListener('input',updatePreview)
@@ -180,7 +187,51 @@ nextBtn.addEventListener('click',_0=>{if(stage<3){stage++;switchStage()}})
 window.addEventListener('load',restoreState)
 const getToken=_0=>window.open('https://github.com/settings/tokens/new?description=access-publisher&scopes=repo')
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+<script>
+let useMonaco = false;
+let monacoEditor = null;
+const toggleBtn = document.getElementById('tht');
+
+const editorContainer = document.createElement('div');
+editorContainer.style.flex = '1';
+editorContainer.style.display = 'none'; 
+editor.parentNode.insertBefore(editorContainer, editor.nextSibling);
+
+toggleBtn.addEventListener('click', () => {
+useMonaco = !useMonaco;
+
+if (useMonaco) {
+editor.style.display = 'none';
+editorContainer.style.display = 'flex'; 
+
+if (!monacoEditor) {
+require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' } });
+require(['vs/editor/editor.main'], function () {
+monacoEditor = monaco.editor.create(editorContainer, {
+value: editor.value,
+language: 'html',
+theme: 'vs-dark',
+minimap: { enabled: false },
+automaticLayout: true
+});
+
+monacoEditor.onDidChangeModelContent(() => {
+editor.value = monacoEditor.getValue(); 
+});
+});
+} else {
+monacoEditor.setValue(editor.value);
+monacoEditor.layout(); 
+}
+} else {
+editor.style.display = 'flex'; 
+editorContainer.style.display = 'none';
+}
+});
+</script>
+
 </body>
 </html>
-
 
