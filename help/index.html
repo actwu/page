@@ -7,21 +7,23 @@
 <link rel="icon" href="https://actwu.github.io/display/192.png">
 
 <style>
-::-webkit-scrollbar{width:5px;height:8px}
-::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:0}
-::-webkit-scrollbar-thumb:hover{background:#a5a5a5}
-body{margin:0;font-family:monospace;color:#fff;background:#000}
+  :root{font-family:'Arial',sans-serif;--bg:#000;--text:#f2f2ff;--thumb:#202025;--btn:#000;--line:#161423;--place:#868293;--progress-bg:#2c283d;--progress-fill:#3d4fc7;}
+::placeholder{color:var(--place);}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--thumb);}
+body{background:var(--bg);width:100%;height:100svh;margin:0;}
 lay{display:flex;flex-direction:column;width:100%;height:100svh}
 #editor-container{width:100%;height:50svh;position:relative;background:none}
-Manifests{display:flex;gap:6px;color:#eee;margin-bottom:1in;flex-wrap:nowrap;overflow-x:auto;width:100%;height:100svh;flex-direction:column}
+Manifests{display:flex;gap:6px;color:var(--place);margin-bottom:1in;flex-wrap:nowrap;overflow-x:auto;width:100%;height:100svh;flex-direction:column}
 @media (orientation:landscape){
 lay{flex-direction:row}
 #editor-container{width:50vw;height:100svh}
 Manifests{flex-direction:column;width:50vw;height:100svh;overflow-y:auto;overflow-x:hidden;align-content:center;margin-bottom:1in;}
 }
-a,button{padding:.1em;background:#111;text-decoration:none;display:flex;border-radius:15px;color:#fff;margin:2px;outline:unset;border:unset;justify-content:center;place-content:center;align-items:center;text-align:center}
-button{padding:1em;background:#222;margin:8px;cursor:pointer}
-.monaco-editor,.monaco-editor .margin,.monaco-editor-background{background:transparent!important}
+a,button{padding:.1em;background:var(--bg);text-decoration:none;display:flex;border-radius:15px;color:var(--text);margin:2px;outline:unset;border:unset;justify-content:center;place-content:center;align-items:center;text-align:center}
+button{padding:1em;margin:8px;cursor:pointer}
+.monaco-editor,.monaco-editor .margin,.monaco-editor-background{background:transparent!important;}
 [sn]{display:flex;}
 </style>
 
