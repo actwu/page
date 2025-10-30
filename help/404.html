@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Actwu - HTML Helper</title>
+<meta name="description" content="HTML helper showing basic code samples.">
+<link rel="icon" href="https://actwu.github.io/display/192.png">
+
+<style>
+::-webkit-scrollbar{width:5px;height:8px}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:0}
+::-webkit-scrollbar-thumb:hover{background:#a5a5a5}
+body{margin:0;font-family:monospace;color:#fff;background:#000}
+lay{display:flex;flex-direction:column;width:100%;height:100svh}
+#editor-container{width:100%;height:50svh;position:relative;background:none}
+Manifests{display:flex;gap:6px;color:#eee;margin-bottom:1in;flex-wrap:nowrap;overflow-x:auto;width:100%;height:100svh;flex-direction:column}
+@media (orientation:landscape){
+lay{flex-direction:row}
+#editor-container{width:50vw;height:100svh}
+Manifests{flex-direction:column;width:50vw;height:100svh;overflow-y:auto;overflow-x:hidden;align-content:center;margin-bottom:1in;}
+}
+a,button{padding:.1em;background:#111;text-decoration:none;display:flex;border-radius:15px;color:#fff;margin:2px;outline:unset;border:unset;justify-content:center;place-content:center;align-items:center;text-align:center}
+button{padding:1em;background:#222;margin:8px;cursor:pointer}
+.monaco-editor,.monaco-editor .margin,.monaco-editor-background{background:transparent!important}
+[sn]{display:flex;}
+</style>
+
+<body>
+<span sn>
+<button onmousedown="window.open('https://actwu.github.io/page/')">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+Back</button>
+<button style="max-width:100px" onmousedown="copySnippet()">Copy</button>
+</span>
+
+<lay>
+<div id="editor-container">
+<div id="editor" style="width:100%; height:100%;"></div>
+</div>
+<Manifests>
+<p>Site Info</p>
+<button onmousedown="snp(`<meta name='description' content='A short summary of the page purpose'>`)">Decscription</button>
+<button onmousedown="snp(`<img src='image.png' alt='A scenic mountain view'>`)">Alt</button>
+<button onmousedown="snp(`aria='Close dialog'`)">Aria</button>
+<br><br>
+<p>Parts</p>
+
+<button onmousedown="snp(`<html style='color-scheme:dark'>`)">Dark Mode</button>
+
+<button onmousedown="snp(`<h1>Hello World</h1>`)">Title</button>
+<button onmousedown="snp(`<h2>Subheading Example</h2>`)">Heading</button>
+<button onmousedown="snp(`<h3>Smaller Heading</h3>`)">Description</button>
+<button onmousedown="snp(`<p>This is a paragraph of text.</p>`)">&lt;p&gt; Paragraph</button>
+<button onmousedown="snp(`<button>Click Me</button>`)">&lt;button&gt; Simple Button</button>
+<button onmousedown='snp(`<button onmousedown="window.open${"(`https://example.com`)"}">Open Example</button>`)'>Link Button</button>
+
+<button onmousedown="snp(`<set>
+<div>Item One</div>
+<div>Item Two</div>
+</set>
+
+<style>
+set{display:flex;flex-direction:column;gap:10px;background:#111;padding:10px;border-radius:6px}
+</style>`)">&lt;set&gt; Flex Column</button>
+
+<button onmousedown="snp(`<set row>
+<div>Left</div>
+<div>Right</div>
+</set>
+
+<style>
+set[row]{display:flex;flex-direction:row;gap:10px;background:#111;padding:10px;border-radius:6px}
+</style>`)">&lt;set row&gt; Flex Row</button>
+
+<button onmousedown="snp(`<textarea placeholder='Write here...'></textarea>`)">&lt;textarea&gt;</button>
+
+<br><br>
+</Manifests>
+
+
+</lay>
+
+<iframe src="https://actwu.github.io/credit/" frameborder="0"></iframe>
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+<script>
+let editor,currentSnippet=''
+
+require.config({paths:{vs:'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs'}});
+require(['vs/editor/editor.main'],function(){
+editor=monaco.editor.create(document.getElementById('editor'),{
+value:'Click any button to preview HTML.',
+language:'html',
+theme:'vs-dark',
+minimap:{enabled:false},
+automaticLayout:true,
+fontSize:14,
+readOnly:true,
+wordWrap:'on'
+});
+});
+
+snp=_0=>{
+currentSnippet=_0
+editor.setValue(_0)
+}
+
+copySnippet=_0=>{
+if(!currentSnippet)return alert('Select a snippet first')
+navigator.clipboard.writeText(currentSnippet)
+alert('Copied')
+}
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('./sw.js')
+.then(()=>console.log('SW registered'))
+.catch(err=>console.warn('SW failed',err))
+}
+</script>
+
+</body>
+</html>
