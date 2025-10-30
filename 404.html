@@ -37,9 +37,9 @@ box:hover{background-color:var(--line);}
 @media (orientation:portrait){
 section[aria-stage][data-active]{flex-direction:column-reverse;}
 }
-  .monaco-editor, .monaco-editor .margin, .monaco-editor-background {
+.monaco-editor, .monaco-editor .margin, .monaco-editor-background {
 background: transparent !important;
-  }
+}
 </style>
 </head>
 <body>
@@ -48,9 +48,9 @@ background: transparent !important;
 <nav>
 <button id="tht"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-xml-icon lucide-code-xml"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></button>
 <button onclick="window.open('https://actwu.github.io/gen/seo/','_blank','width=800,height=600')">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-library-icon lucide-square-library"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7v10"/><path d="M11 7v10"/><path d="m15 7 2 10"/></svg>
-  SEO </button>
-  •
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-library-icon lucide-square-library"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7v10"/><path d="M11 7v10"/><path d="m15 7 2 10"/></svg>
+SEO </button>
+•
 <button id="prevBtn" hide>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
 Back</button>
@@ -62,7 +62,7 @@ Back</button>
 <main>
 <section aria-stage="1" data-active>
 <textarea id="editor" placeholder="Write HTML here...">
-  &lt;!DOCTYPE html&gt;
+&lt;!DOCTYPE html&gt;
 &lt;html lang="en" style="color-scheme: dark;"&gt;
 &lt;head&gt;
 &lt;meta charset="UTF-8"&gt;
@@ -70,49 +70,49 @@ Back</button>
 &lt;title&gt;Sample Blog Post&lt;/title&gt;
 &lt;style&gt;
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+font-family: Arial, sans-serif;
+line-height: 1.6;
+padding: 2rem;
+max-width: 800px;
+margin: auto;
 }
 
 h1, h2, h3 {
-  margin-bottom: 0.5rem;
+margin-bottom: 0.5rem;
 }
 
 p {
-  margin-bottom: 1rem;
+margin-bottom: 1rem;
 }
 
 a {
-  text-decoration: underline;
+text-decoration: underline;
 }
 
 textarea {
-  width: 100%;
-  height: 150px;
-  font-family: monospace;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+width: 100%;
+height: 150px;
+font-family: monospace;
+padding: 0.5rem;
+margin-bottom: 1rem;
 }
 
 button {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
+padding: 0.5rem 1rem;
+cursor: pointer;
 }
 
 body::-webkit-scrollbar {
-  width: 10px;
+width: 10px;
 }
 
 body::-webkit-scrollbar-track {
-  background: #111;
+background: #111;
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 5px;
+background: #555;
+border-radius: 5px;
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -133,7 +133,7 @@ body::-webkit-scrollbar-thumb {
 
 &lt;/body&gt;
 &lt;/html&gt;
-  
+
 </textarea>
 <iframe id="preview" aria-label="Live preview"></iframe>
 </section>
@@ -172,14 +172,28 @@ const nextBtn=document.getElementById('nextBtn');
 const publishBtn=document.getElementById('publishBtn');
 let timer;
 
+
 const updatePreview=_0=>{
 clearTimeout(timer)
 timer=setTimeout(()=>{
 const doc=frame.contentDocument
 doc.open()
-doc.write(editor.value)
+doc.write(
+`<style>
+html {
+background:#f2f2f2;
+color:#444;
+}
+html[style="color-scheme:dark"] {
+background:#000;
+color:#f2f2ff;
+}
+</style>
+${editor.value}`
+);
 doc.close()
 localStorage.setItem('pageit_html',editor.value)
+
 },120)
 }
 
@@ -196,6 +210,7 @@ editor.value=localStorage.getItem('pageit_html')||''
 token.value=localStorage.getItem('pageit_token')||''
 repo.value=localStorage.getItem('pageit_repo')||''
 renderSites()
+
 updatePreview()
 }
 
@@ -296,7 +311,7 @@ automaticLayout: true
 
 monacoEditor.onDidChangeModelContent(() => {
 editor.value = monacoEditor.getValue(); 
-  updatePreview()
+updatePreview()
 });
 });
 } else {
