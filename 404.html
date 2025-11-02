@@ -17,8 +17,8 @@ body{background:var(--bg);width:100%;height:100svh;display:flex;flex-direction:c
 nav{left:0;right:0;background:var(--bg);display:flex;padding:.5rem;
 gap:.5rem;flex-direction:row;justify-content:left;align-items:center;position:sticky;bottom:0;}
 main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-section[aria-stage]{flex:1;display:none;padding:0;}
-section[aria-stage][data-active]{display:flex;flex-direction:row;align-items:stretch;gap:0;}
+section[astage]{flex:1;display:none;padding:0;}
+section[astage][data-active]{display:flex;flex-direction:row;align-items:stretch;gap:0;}
 textarea{flex:1;background:var(--bg);color:var(--text);resize:none;padding:.8rem;font-size:.9rem;outline:none;height:100%;border-bottom:4px solid var(--line);}
 textarea:hover{background-color:var(--line);border-bottom:4px solid var(--progress-bg);}
 iframe{flex:1;background:#fff;height:100%;border:none;}
@@ -35,7 +35,7 @@ box:hover{background-color:var(--line);}
 ::-webkit-scrollbar-thumb{background:var(--thumb);}
 [hide]{display:none;}
 @media (orientation:portrait){
-section[aria-stage][data-active]{flex-direction:column-reverse;}
+section[astage][data-active]{flex-direction:column-reverse;}
 }
 .monaco-editor, .monaco-editor .margin, .monaco-editor-background {
 background: transparent !important;
