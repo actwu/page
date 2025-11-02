@@ -72,7 +72,7 @@ SEO
 </nav>
 
 <main>
-<section aria-stage="1" data-active>
+<section astage="1" data-active>
 <textarea id="editor" placeholder="Write HTML here...">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en" style="color-scheme: dark;"&gt;
@@ -150,7 +150,7 @@ border-radius: 5px;
 <iframe id="preview" aria-label="Live preview"></iframe>
 </section>
 
-<section aria-stage="2">
+<section astage="2">
 <form id="publishForm">
 <button onmousedown=getToken()>Get Token</button>
 <input id="token" 
@@ -163,7 +163,7 @@ required>
 </form>
 </section>
 
-<section aria-stage="3">
+<section astage="3">
 <set big>
 <h3>Published Sites</h3>
 <div id="sitesList"></div>
@@ -173,7 +173,7 @@ required>
 
 <script defer>
 let stage=1;
-const stages=document.querySelectorAll('section[aria-stage]');
+const stages=document.querySelectorAll('section[astage]');
 const editor=document.getElementById('editor');
 const frame=document.getElementById('preview');
 const token=document.getElementById('token');
@@ -337,8 +337,7 @@ editorContainer.style.display = 'none';
 }
 });
 
-  const genSet=()=>{const t=['span','div','set','box','btn','a','button','textarea','input','select','details','form','p','h1','h2','h3','h4','h5','h6','table','img','iframe','video'],e=document.querySelectorAll(t.join(','));e.forEach(el=>{const tag=el.tagName.toLowerCase();if(tag==='btn'){el.setAttribute('role','button');if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0')}if(tag==='img'){if(!el.hasAttribute('alt')||el.alt.trim()==='')el.setAttribute('alt','Descriptive image')}else if(tag==='video'){if(!el.hasAttribute('aria-label'))el.setAttribute('aria-label','Video content')}else if(['a','button','input','textarea','select','details','btn'].includes(tag)){const lab=el.getAttribute('aria-label')||el.textContent.trim()||el.getAttribute('alt'),id=el.id;if(!lab){const label=document.querySelector('label[for="'+id+'"]'),labelText=label?label.textContent.trim():'';el.setAttribute('aria-label',labelText||'Interactive element')}}else{const txt=el.textContent.trim();if(!txt&&!el.hasAttribute('aria-label'))el.setAttribute('aria-label','Content description')}})};
-  genSet();
+  const genSet=()=>{const t=['span','div','set','box','btn','a','button','textarea','input','select','details','form','p','h1','h2','h3','h4','h5','h6','table','img','iframe','video'],e=document.querySelectorAll(t.join(',')),genId=()=>Math.random().toString(36).slice(2,4);const ids=new Set();e.forEach(el=>{const tag=el.tagName.toLowerCase();if(!el.id){let id=genId();while(ids.has(id)){id=genId()}ids.add(id);el.id=id}if(tag==='btn'){el.setAttribute('role','button');if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0')}if(tag==='img'){if(!el.hasAttribute('alt')||el.alt.trim()==='')el.setAttribute('alt','Descriptive image')}else if(tag==='video'){if(!el.hasAttribute('aria-label'))el.setAttribute('aria-label','Video content')}else if(['a','button','input','textarea','select','details','btn'].includes(tag)){const lab=el.getAttribute('aria-label')||el.textContent.trim()||el.getAttribute('alt'),id=el.id;if(!lab){const label=document.querySelector('label[for="'+id+'"]'),labelText=label?label.textContent.trim():'';el.setAttribute('aria-label',labelText||'Interactive element')}}else{const txt=el.textContent.trim();if(!txt&&!el.hasAttribute('aria-label'))el.setAttribute('aria-label','Content description')}})};  genSet();
 </script>
 
 </body>
